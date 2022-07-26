@@ -1,0 +1,42 @@
+﻿@using Internet_banking.Core.Application.ViewModels.TypeAccount;
+@using Internet_banking.Core.Application.ViewModels.Products;
+@model SaveProductVM
+
+
+@{
+    ViewData["Title"] = "Añadir Producto";
+}
+
+<div class="container mt-5">
+    <form method="post" asp-controller="Product" asp-action="AddProductPost" class="form-control">
+        <div class="row mx-auto">
+            <div class="col-6 offset-3 text-center my-auto">
+                <div class="form-group w-100">
+                    @if (Model.IdAccount == 2)
+                    {
+                        <label asp-for="Amount" class="form-label">Monto de apertura de la cuenta de ahorros</label>
+                        <input asp-for="Amount" type="number" step="any" value="0" class="form-control border-1 border-dark" />
+                        <span asp-validation-for="Amount" class="text-danger fw-bolder"></span>
+                    }
+                    else if (Model.IdAccount == 3)
+                    {
+                        <label asp-for="Amount" class="form-label">Limite de la tarjeta de credito</label>
+                        <input asp-for="Amount" type="number" step="any" value="0" class="form-control border-1 border-dark" />
+                        <span asp-validation-for="Amount" class="text-danger fw-bolder"></span>
+                    }
+                    else if (Model.IdAccount == 4)
+                    {
+                        <label asp-for="Amount" class="form-label">Monto que sera prestado</label>
+                        <input asp-for="Amount" type="number" step="any" value="0" class="form-control border-1 border-dark" />
+                        <span asp-validation-for="Amount" class="text-danger fw-bolder"></span>
+                    }
+                </div>
+                <input hidden asp-for="IdClient" value="@Model.IdClient" />
+                <input hidden asp-for="IdAccount" value="@Model.IdAccount" />
+            </div>
+            <div class=" text-end col my-auto py-3">
+                <button type="submit" class="btn btn btn-primary">Agregar Producto</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,97 @@
+﻿@using Internet_banking.Core.Application.Enums;
+@using Internet_banking.Core.Application.ViewModels.Users;
+@model List<UserVM>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <p class="card-title fs-2">Clientes</p>
+        </div>
+        @if (Model.Count == 0 || Model == null)
+        {
+            <div class="card-body">
+                <h5 class="card-title">No se ha encontrado clientes en la base de datos</h5>
+                <h5 class="card-subtitle">Si considera que es un error, favor de llamar al servicio tecnico.</h5>
+            </div>
+        }
+        else
+        {
+            <div class="card-body">
+                <h5 class="card-title">Seleccione el cliente al que desea agregarle un producto</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cedula</th>
+                            <th>Nombre</th>
+                            <th>Nombre de usuario</th>
+                            <th>Email</th>
+                            <th class="fw-bolder">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.DocumementId</td>
+                                <td>@item.Firstname @item.Lastname</td>
+                                <td>@item.Username</td>
+                                <td>@item.Email</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@($"#{item.Username}")">
+                                        Agregar Producto
+                                    </button>
+                                    <a type="button" class="btn btn-secondary btn-sm" asp-controller="Product" asp-action="SeeProduct" asp-route-id="@item.Id">
+                                        Ver productos
+                                    </a>
+                                    <div class="modal fade" id="@item.Username" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <form method="post" asp-controller="Product" asp-action="AddProduct">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Elige tu tipo de cuenta</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <input hidden value="@item.Id" name="IdClient" />
+                                                    <div class="modal-body">
+                                                        <p class="text-body">Seleccione el tipo de cuenta que desea agregar al usuario:</p>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" checked name="IdAccount" value="@((int)TypesAccountEnum.Cuentadeahorro)" id="Ahorro">
+                                                            <label class="form-check-label" for="Ahorro">
+                                                                Cuenta de Ahorros
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="IdAccount" value="@((int)TypesAccountEnum.Tarjetadecredito)" id="Credito">
+                                                            <label class="form-check-label" for="Credito">
+                                                                Tarjeta de Credito
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="IdAccount" value="@((int)TypesAccountEnum.Prestamo)" id="Prestamo">
+                                                            <label class="form-check-label" for="Prestamo">
+                                                                Prestamo
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Aceptar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
